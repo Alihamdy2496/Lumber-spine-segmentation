@@ -1,0 +1,27 @@
+{
+	"name": "CIT646WorkingSpace", 
+    "image": "cit654:latest", 
+	"settings": { 
+		"terminal.integrated.profiles.linux": {
+			"bash": {
+				"path": "/bin/bash"
+			}
+		},
+		"terminal.integrated.defaultProfile.linux": "bash",
+		"python.pythonPath": "/usr/bin/python3.8",
+		"python.languageServer": "Pylance",
+		"python.linting.enabled": true
+	},
+	"runArgs": ["--net=host","--privileged", "--runtime=nvidia","--shm-size=4g","--gpus=all"],
+	"extensions": [
+		"ms-vscode.cpptools",
+		"ms-python.python",
+		"streetsidesoftware.code-spell-checker",
+		"ms-toolsai.jupyter"
+	],
+    "mounts": [
+		"source=${localEnv:HOME}/.Xauthority,target=/home/root/.Xauthority,type=bind,consistency=cached"
+      ],
+	"remoteUser": "root",
+	"postAttachCommand": "echo 'for DD in $(xauth list | awk -F\"[: ]\" \"{print \\$2}\" | sort | uniq); do if xdpyinfo -display localhost:$DD &> /dev/null; then export DISPLAY=localhost:\"$DD\"; break; fi; done' >>  ~/.bashrc"
+}
